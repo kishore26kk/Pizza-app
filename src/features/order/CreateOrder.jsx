@@ -18,7 +18,7 @@ const isValidPhone = (str) =>
 function CreateOrder() {
   // const username = useSelector(state => state.user.username);
   const [withPriority, setWithPriority] = useState(false);
-  const {username, status : addressState, position, address} = useSelector((state)=> state.user)
+  const {username, status : addressState, position, address, error : errorAddress} = useSelector((state)=> state.user)
   const isLoadingAddress = addressState === "loading"
   const navigate = useNavigation();
   const isSubmitting = navigate.state === 'submitting';
@@ -50,6 +50,7 @@ function CreateOrder() {
           <label className="sm:basis-40">Address</label>
           <div className="grow">
             <input className="input" type="text" name="address" disabled={isLoadingAddress} defaultValue={address} required />
+            {addressState === "error" && <p className="mt-2 text-xs text-red-700 rounded-full">{errorAddress}</p>}
           </div>
           {!position.latitude && !position.longitude && (
           <span className="absolute right-[3px]">
@@ -75,8 +76,8 @@ function CreateOrder() {
         </div>
         <div>
           <input type="hidden" name="cart" value={JSON.stringify(cart)} />
-          <Button disabled={isSubmitting} type="small">
-            {isSubmitting ? "Placing Order" : `Order now ${formatCurrency(totalCartPrice)}`}</Button>
+          <Button disabled={isSubmitting || isLoadingAddress} type="small">
+            {isSubmitting ? "Placing Order" : `Order now ${formatCurrency(totalCartPrice)}`}</Button>   
         </div>
       </Form>
     </div>
