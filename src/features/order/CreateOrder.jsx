@@ -76,6 +76,7 @@ function CreateOrder() {
         </div>
         <div>
           <input type="hidden" name="cart" value={JSON.stringify(cart)} />
+          <input type="hidden" name="position" value={position.latitude && position.longitude ? `${position.latitude},${position.longitude}` : ""}/>
           <Button disabled={isSubmitting || isLoadingAddress} type="small">
             {isSubmitting ? "Placing Order" : `Order now ${formatCurrency(totalCartPrice)}`}</Button>   
         </div>
@@ -92,9 +93,12 @@ export async function action({request}){
     cart : JSON.parse(data.cart),
     priority : data.priority === "on",
   }
+
+  console.log(order);
   const errors = {};
   if(!isValidPhone(order.phone)) errors.phone = "Please give us your correct phone number. We might need it to contact you"
   if(Object.keys(errors).length > 0) return errors;
+
   const newOrder = await createOrder(order);
   //DO not over use
   store.dispatch(clearCart())
