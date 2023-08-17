@@ -8,6 +8,7 @@ import {
   formatDate,
 } from "../../utils/helpers";
 import { useEffect } from "react";
+import UpdateOrder from "./UpdateOrder";
 
 function Order() {
   const order = useLoaderData();
@@ -19,9 +20,7 @@ function Order() {
     }
   },[])
 
-  // console.log(fetcher.data);
   console.log(fetcher)
-  // console.log(order)/
   const {
     id,
     status,
@@ -65,13 +64,14 @@ function Order() {
         {priority && <p>Price priority: {formatCurrency(priorityPrice)}</p>}
         <p>To pay on delivery: {formatCurrency(orderPrice + priorityPrice)}</p>
       </div>
+      {!priority && <UpdateOrder order={order}/>}
     </div>
   );  
 }
 
 export async function loader({params}){
    const order = await getOrder(params.orderId);
-  return order;
+   return order;
 }
 
 export default Order;
