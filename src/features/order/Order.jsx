@@ -20,7 +20,6 @@ function Order() {
     }
   },[])
 
-  console.log(fetcher)
   const {
     id,
     status,
@@ -32,8 +31,7 @@ function Order() {
   } = order;
 
   const deliveryIn = calcMinutesLeft(estimatedDelivery);
-  console.log(cart);
-  
+    
   return (
     <div className="px-4 py-6 space-y-8">
       <div className="flex flex-wrap items-center justify-between">
